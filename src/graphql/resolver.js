@@ -2,6 +2,38 @@ import { schemaComposer } from 'graphql-compose';
 
 import { UserTC, ItemTC } from './type';
 
+UserTC.addRelation('followers', {
+	resolver: () => UserTC.getResolver('findByIds'),
+	prepareArgs: {
+		_ids: user => user.followers,
+	},
+	projection: { followers: 1 },
+});
+
+UserTC.addRelation('follows', {
+	resolver: () => UserTC.getResolver('findByIds'),
+	prepareArgs: {
+		_ids: user => user.follows,
+	},
+	projection: { follows: 1 },
+});
+
+UserTC.addRelation('likes', {
+	resolver: () => ItemTC.getResolver('findByIds'),
+	prepareArgs: {
+		_ids: user => user.likes,
+	},
+	projection: { likes: 1 },
+});
+
+ItemTC.addRelation('likedBy', {
+	resolver: () => UserTC.getResolver('findByIds'),
+	prepareArgs: {
+		_ids: item => item.likedBy,
+	},
+	projection: { likedBy: 1 },
+});
+
 schemaComposer.Query.addFields({
 	userById: UserTC.getResolver('findById'),
 	userByIds: UserTC.getResolver('findByIds'),
