@@ -1,0 +1,37 @@
+---
+service: serverless-graphql-mongo
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  deploymentBucket: ${self:service}-artefacts-${self:provider.region}
+  region: ${opt:region, self:custom.defaultRegion}
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  graphql:
+    handler: src/server.default
+    memorySize: 256
+    events:
+      - http:
+          path: ${self:provider.stage}/graphql
+          method: post
+          cors: true
+      - http:
+          path: ${self:provider.stage}/graphql
+          method: get
+          cors: true
+
+plugins:
+  - serverless-plugin-create-deployment-bucket
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  defaultRegion: 'eu-west-1'
+  webpack:
+    packager: 'yarn'
+    includeModules: true
