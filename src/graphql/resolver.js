@@ -1,69 +1,80 @@
-import { schemaComposer } from 'graphql-compose';
+import Mongo from '../models';
 
-import { UserTC, ItemTC } from './type';
-
-UserTC.addRelation('followers', {
-	resolver: () => UserTC.getResolver('findByIds'),
-	prepareArgs: {
-		_ids: user => user.followers,
+export default {
+	Query: {
+		User: (_, { _id }) => Mongo.User.findById(_id),
+		Users: () => Mongo.User.find(),
+		Item: (_, { _id }) => Mongo.Item.findById(_id),
+		Items: () => Mongo.Item.find(),
 	},
-	projection: { followers: 1 },
-});
-
-UserTC.addRelation('follows', {
-	resolver: () => UserTC.getResolver('findByIds'),
-	prepareArgs: {
-		_ids: user => user.follows,
+	User: {
+		followees: async ({ _id }) => {
+			const userFollows = await Mongo.UserFollowUser.find({
+				followerId: _id,
+			});
+			const followeeIds = userFollows.map(follow => follow.followeeId);
+			const followees = await Mongo.User.find({ _id: { $in: followeeIds } });
+			return followees;
+		},
+		followers: async ({ _id }) => {
+			const userFollowed = await Mongo.UserFollowUser.find({
+				followeeId: _id,
+			});
+			const followerIds = userFollowed.map(follow => follow.followerId);
+			const followers = await Mongo.User.find({ _id: { $in: followerIds } });
+			return followers;
+		},
+		likeItems: async ({ _id }) => {
+			const likes = await Mongo.UserLikeItem.find({
+				userId: _id,
+			});
+			const itemIds = likes.map(like => like.itemId);
+			const items = await Mongo.Item.find({ _id: { $in: itemIds } });
+			return items;
+		},
 	},
-	projection: { follows: 1 },
-});
-
-UserTC.addRelation('likes', {
-	resolver: () => ItemTC.getResolver('findByIds'),
-	prepareArgs: {
-		_ids: user => user.likes,
+	Item: {
+		likedByUsers: async ({ _id }) => {
+			const likes = await Mongo.UserLikeItem.find({
+				itemId: _id,
+			});
+			const userIds = likes.map(like => like.userId);
+			const users = await Mongo.User.find({ _id: { $in: userIds } });
+			return users;
+		},
 	},
-	projection: { likes: 1 },
-});
-
-ItemTC.addRelation('likedBy', {
-	resolver: () => UserTC.getResolver('findByIds'),
-	prepareArgs: {
-		_ids: item => item.likedBy,
+	Mutation: {
+		CreateUser: (_, { user }) => Mongo.User.create(user),
+		UpdateUser: (_, { _id, user }) => Mongo.User.findByIdAndUpdate(_id, user),
+		DeleteUser: (_, { _id }) => Mongo.User.findOneAndDelete(_id),
+		CreateItem: (_, { item }) => Mongo.Item.create(item),
+		UpdateItem: (_, { _id, item }) => Mongo.Item.findByIdAndUpdate(_id, item),
+		DeleteItem: (_, { _id }) => Mongo.Item.findOneAndDelete(_id),
+		UserFollowUser: async (_, { followerId, followeeId }) => {
+			await Mongo.UserFollowUser.create({
+				followerId,
+				followeeId,
+			});
+			const user = await Mongo.User.findById(followerId);
+			return user;
+		},
+		UserUnfollowUser: async (_, { followerId, followeeId }) => {
+			await Mongo.UserFollowUser.findOneAndDelete({ followerId, followeeId });
+			const user = await Mongo.User.findById(followerId);
+			return user;
+		},
+		UserLikeItem: async (_, { userId, itemId }) => {
+			await Mongo.UserLikeItem.create({
+				userId,
+				itemId,
+			});
+			const user = await Mongo.User.findById(userId);
+			return user;
+		},
+		UserDisplikeItem: async (_, { userId, itemId }) => {
+			await Mongo.UserFollowUser.findOneAndDelete({ userId, itemId });
+			const user = await Mongo.User.findById(userId);
+			return user;
+		},
 	},
-	projection: { likedBy: 1 },
-});
-
-schemaComposer.Query.addFields({
-	userById: UserTC.getResolver('findById'),
-	userByIds: UserTC.getResolver('findByIds'),
-	userOne: UserTC.getResolver('findOne'),
-	userMany: UserTC.getResolver('findMany'),
-	userCount: UserTC.getResolver('count'),
-	itemById: ItemTC.getResolver('findById'),
-	itemByIds: ItemTC.getResolver('findByIds'),
-	itemOne: ItemTC.getResolver('findOne'),
-	itemMany: ItemTC.getResolver('findMany'),
-	itemCount: ItemTC.getResolver('count'),
-});
-
-schemaComposer.Mutation.addFields({
-	userCreateOne: UserTC.getResolver('createOne'),
-	userCreateMany: UserTC.getResolver('createMany'),
-	userUpdateById: UserTC.getResolver('updateById'),
-	userUpdateOne: UserTC.getResolver('updateOne'),
-	userUpdateMany: UserTC.getResolver('updateMany'),
-	userRemoveById: UserTC.getResolver('removeById'),
-	userRemoveOne: UserTC.getResolver('removeOne'),
-	userRemoveMany: UserTC.getResolver('removeMany'),
-	itemCreateOne: ItemTC.getResolver('createOne'),
-	itemCreateMany: ItemTC.getResolver('createMany'),
-	itemUpdateById: ItemTC.getResolver('updateById'),
-	itemUpdateOne: ItemTC.getResolver('updateOne'),
-	itemUpdateMany: ItemTC.getResolver('updateMany'),
-	itemRemoveById: ItemTC.getResolver('removeById'),
-	itemRemoveOne: ItemTC.getResolver('removeOne'),
-	itemRemoveMany: ItemTC.getResolver('removeMany'),
-});
-
-export default schemaComposer;
+};

@@ -8,24 +8,6 @@ const User = new Schema({
 		type: String,
 		required: true,
 	},
-	follows: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'User',
-		},
-	],
-	followers: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'User',
-		},
-	],
-	likes: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Item',
-		},
-	],
 });
 
 if (process.env.IS_OFFLINE) {

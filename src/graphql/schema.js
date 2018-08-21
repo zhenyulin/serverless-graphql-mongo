@@ -1,3 +1,9 @@
-import schemaComposer from './resolver';
+import { makeExecutableSchema } from 'apollo-server-lambda';
 
-export default schemaComposer.buildSchema();
+import typeDefs from './type';
+import resolvers from './resolver';
+
+export default makeExecutableSchema({
+	typeDefs,
+	resolvers,
+});
