@@ -9,6 +9,9 @@ provider:
   deploymentBucket: ${self:service}-artefacts-${self:provider.region}
   region: ${opt:region, self:custom.defaultRegion}
   stage: ${opt:stage, 'dev'}
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    MONGODB_URI: ${env:MONGODB_URI}
 
 functions:
   graphql:

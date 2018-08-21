@@ -6,10 +6,12 @@ const UserLikeItem = new Schema({
 	userId: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
+		index: true,
 	},
 	itemId: {
 		type: Schema.Types.ObjectId,
 		ref: 'Item',
+		index: true,
 	},
 });
 
