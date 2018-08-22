@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query Item get item by _id 1`] = `
+Object {
+  "data": Object {
+    "Item": Object {
+      "_id": "4edd40c86762e0fb12000015",
+      "likedByUsers": Array [],
+      "name": "Birth of Cool",
+    },
+  },
+}
+`;
+
+exports[`Query Item return null if item not found 1`] = `
+Object {
+  "data": Object {
+    "Item": null,
+  },
+}
+`;
+
+exports[`Query Item throw error if _id is not provided 1`] = `
+Object {
+  "errors": Array [
+    [GraphQLError: Syntax Error: Expected Name, found )],
+  ],
+}
+`;
+
+exports[`Query Item throw error if _id is not valid mongodb id 1`] = `
+Object {
+  "data": Object {
+    "Item": null,
+  },
+  "errors": Array [
+    [GraphQLError: Cast to ObjectId failed for value "random" at path "_id" for model "Item"],
+  ],
+}
+`;
+
+exports[`Query Items get all items 1`] = `
+Object {
+  "data": Object {
+    "Items": Array [
+      Object {
+        "_id": "4edd40c86762e0fb12000013",
+        "likedByUsers": Array [],
+        "name": "Imagine",
+      },
+      Object {
+        "_id": "4edd40c86762e0fb12000014",
+        "likedByUsers": Array [
+          Object {
+            "name": "John Lennon",
+          },
+        ],
+        "name": "4:00",
+      },
+      Object {
+        "_id": "4edd40c86762e0fb12000015",
+        "likedByUsers": Array [],
+        "name": "Birth of Cool",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Query User get user by _id 1`] = `
+Object {
+  "data": Object {
+    "User": Object {
+      "_id": "4edd40c86762e0fb12000003",
+      "followees": Array [],
+      "followers": Array [
+        Object {
+          "name": "John Lennon",
+        },
+      ],
+      "likeItems": Array [],
+      "name": "John Cage",
+    },
+  },
+}
+`;
+
+exports[`Query User return null if user not found 1`] = `
+Object {
+  "data": Object {
+    "User": null,
+  },
+}
+`;
+
+exports[`Query User throw error if _id is not provided 1`] = `
+Object {
+  "errors": Array [
+    [GraphQLError: Syntax Error: Expected Name, found )],
+  ],
+}
+`;
+
+exports[`Query User throw error if _id is not valid mongodb id 1`] = `
+Object {
+  "data": Object {
+    "User": null,
+  },
+  "errors": Array [
+    [GraphQLError: Cast to ObjectId failed for value "random" at path "_id" for model "User"],
+  ],
+}
+`;
+
+exports[`Query Users get all users 1`] = `
+Object {
+  "data": Object {
+    "Users": Array [
+      Object {
+        "_id": "4edd40c86762e0fb12000003",
+        "followees": Array [],
+        "followers": Array [
+          Object {
+            "name": "John Lennon",
+          },
+        ],
+        "likeItems": Array [],
+        "name": "John Cage",
+      },
+      Object {
+        "_id": "4edd40c86762e0fb12000004",
+        "followees": Array [
+          Object {
+            "name": "John Cage",
+          },
+        ],
+        "followers": Array [],
+        "likeItems": Array [
+          Object {
+            "name": "4:00",
+          },
+        ],
+        "name": "John Lennon",
+      },
+      Object {
+        "_id": "4edd40c86762e0fb12000005",
+        "followees": Array [],
+        "followers": Array [],
+        "likeItems": Array [],
+        "name": "Miles Davis",
+      },
+    ],
+  },
+}
+`;

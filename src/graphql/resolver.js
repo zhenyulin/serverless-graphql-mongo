@@ -1,11 +1,17 @@
-import Mongo from '../models';
+import Mongo from 'models';
 
 export default {
 	Query: {
 		User: (_, { _id }) => Mongo.User.findById(_id),
-		Users: () => Mongo.User.find(),
+		Users: () =>
+			Mongo.User.find()
+				.setOptions({ sort: { _id: 1 } })
+				.lean(),
 		Item: (_, { _id }) => Mongo.Item.findById(_id),
-		Items: () => Mongo.Item.find(),
+		Items: () =>
+			Mongo.Item.find()
+				.setOptions({ sort: { _id: 1 } })
+				.lean(),
 	},
 	User: {
 		followees: async ({ _id }) => {
