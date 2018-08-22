@@ -16,6 +16,7 @@ plugins:
   - import
   - jest
   - json
+  - graphql
   - prettier
 rules:
   import/extensions: [warn, {js: never}]
