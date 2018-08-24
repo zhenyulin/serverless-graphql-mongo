@@ -3,7 +3,7 @@ import { Mockgoose } from 'mockgoose';
 
 import DB from 'models';
 
-import * as mock from '__fixtures__';
+import * as mock from '../__fixtures__';
 
 const mockgoose = new Mockgoose(mongoose);
 

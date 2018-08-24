@@ -1,7 +1,8 @@
 import { graphql } from 'graphql';
 
-import * as testDB from 'helpers/test-db-setup';
 import schema from 'graphql/schema';
+
+import * as testDB from './helpers/test-db-setup';
 
 const testCases = cases => {
 	Object.keys(cases).forEach(caseName => {

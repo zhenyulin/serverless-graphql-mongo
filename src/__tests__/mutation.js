@@ -1,8 +1,9 @@
 import { graphql } from 'graphql';
 
-import * as testDB from 'helpers/test-db-setup';
 import schema from 'graphql/schema';
 import Mongo from 'models';
+
+import * as testDB from './helpers/test-db-setup';
 
 const testQuery = async query => {
 	const result = await graphql(schema, query);
