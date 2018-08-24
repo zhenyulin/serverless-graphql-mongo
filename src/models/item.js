@@ -9,6 +9,7 @@ const Item = new Schema({
 	},
 });
 
+/* istanbul ignore next */
 if (process.env.IS_OFFLINE) {
 	delete mongoose.connection.models.Item;
 }

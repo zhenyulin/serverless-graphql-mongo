@@ -18,6 +18,7 @@ const UserFollowUser = new Schema({
 
 UserFollowUser.plugin(findOrCreate);
 
+/* istanbul ignore next */
 if (process.env.IS_OFFLINE) {
 	delete mongoose.connection.models.UserFollowUser;
 }

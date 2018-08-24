@@ -18,6 +18,7 @@ const UserLikeItem = new Schema({
 
 UserLikeItem.plugin(findOrCreate);
 
+/* istanbul ignore next */
 if (process.env.IS_OFFLINE) {
 	delete mongoose.connection.models.UserLikeItem;
 }

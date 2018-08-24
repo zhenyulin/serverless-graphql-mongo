@@ -13,6 +13,7 @@ const User = new Schema({
 	},
 });
 
+/* istanbul ignore next */
 if (process.env.IS_OFFLINE) {
 	delete mongoose.connection.models.User;
 }
