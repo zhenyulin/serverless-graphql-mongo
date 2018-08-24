@@ -27,7 +27,6 @@
     "jest": "^23.5.0",
     "jest-runner-eslint": "^0.6.0",
     "mockgoose": "^7.3.5",
-    "nodemon": "^1.18.3",
     "prettier": "^1.14.2",
     "serverless-dotenv-plugin": "^1.2.0",
     "serverless-offline": "^3.25.9",

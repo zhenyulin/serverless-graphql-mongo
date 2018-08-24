@@ -7,6 +7,8 @@ import * as mock from '../__fixtures__';
 
 const mockgoose = new Mockgoose(mongoose);
 
+jest.setTimeout(600000);
+
 export const connect = async () => {
 	await mockgoose.prepareStorage();
 	await mongoose.connect(
