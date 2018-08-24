@@ -16,11 +16,11 @@ const testCases = cases => {
 describe('Query', () => {
 	beforeAll(async () => {
 		await testDB.connect();
+		await testDB.unloadAll();
 		await testDB.loadAll();
 	});
 
 	afterAll(async () => {
-		await testDB.unloadAll();
 		await testDB.disconnect();
 	});
 

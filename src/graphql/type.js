@@ -40,6 +40,6 @@ export default `
 		UserFollowUser(followerId: ID!, followeeId: ID!): User
 		UserUnfollowUser(followerId: ID!, followeeId: ID!): User
 		UserLikeItem(userId: ID!, itemId: ID!): User
-		UserDisplikeItem(userId: ID!, itemId: ID!): User
+		UserDislikeItem(userId: ID!, itemId: ID!): User
 	}
 `;

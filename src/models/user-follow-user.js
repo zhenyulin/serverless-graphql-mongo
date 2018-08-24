@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import findOrCreate from 'mongoose-findorcreate';
 
 const { Schema } = mongoose;
 
@@ -14,6 +15,8 @@ const UserFollowUser = new Schema({
 		index: true,
 	},
 });
+
+UserFollowUser.plugin(findOrCreate);
 
 if (process.env.IS_OFFLINE) {
 	delete mongoose.connection.models.UserFollowUser;

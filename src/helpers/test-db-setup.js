@@ -1,18 +1,23 @@
 import mongoose from 'mongoose';
+import { Mockgoose } from 'mockgoose';
 
 import DB from 'models';
 
 import * as mock from '__fixtures__';
 
-export const connect = () =>
-	mongoose.connect(
-		process.env.MONGODB_URI_TEST,
+const mockgoose = new Mockgoose(mongoose);
+
+export const connect = async () => {
+	await mockgoose.prepareStorage();
+	await mongoose.connect(
+		process.env.MONGODB_URI,
 		{
 			useNewUrlParser: true,
 		},
 	);
+};
 
-export const disconnect = () => mongoose.disconnect();
+export const disconnect = () => mongoose.connection.close();
 
 export const loadUsers = () => DB.User.create(mock.USERS);
 export const loadItems = () => DB.Item.create(mock.ITEMS);
@@ -24,7 +29,7 @@ export const loadUserLikeItems = () =>
 export const unloadUsers = () => DB.User.remove();
 export const unloadItems = () => DB.Item.remove();
 export const unloadUserFollowUsers = () => DB.UserFollowUser.remove();
-export const unloadUserLikeItems = () => DB.UserFollowUser.remove();
+export const unloadUserLikeItems = () => DB.UserLikeItem.remove();
 
 export const loadAll = () =>
 	Promise.all([

@@ -3,7 +3,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const Item = new Schema({
-	name: String,
+	name: {
+		type: String,
+		required: true,
+	},
 });
 
 if (process.env.IS_OFFLINE) {

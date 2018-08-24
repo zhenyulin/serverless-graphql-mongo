@@ -51,13 +51,15 @@ export default {
 	},
 	Mutation: {
 		CreateUser: (_, { user }) => Mongo.User.create(user),
-		UpdateUser: (_, { _id, user }) => Mongo.User.findByIdAndUpdate(_id, user),
-		DeleteUser: (_, { _id }) => Mongo.User.findOneAndDelete(_id),
+		UpdateUser: (_, { _id, user }) =>
+			Mongo.User.findByIdAndUpdate(_id, user, { new: true }),
+		DeleteUser: (_, { _id }) => Mongo.User.findOneAndDelete({ _id }),
 		CreateItem: (_, { item }) => Mongo.Item.create(item),
-		UpdateItem: (_, { _id, item }) => Mongo.Item.findByIdAndUpdate(_id, item),
-		DeleteItem: (_, { _id }) => Mongo.Item.findOneAndDelete(_id),
+		UpdateItem: (_, { _id, item }) =>
+			Mongo.Item.findByIdAndUpdate(_id, item, { new: true }),
+		DeleteItem: (_, { _id }) => Mongo.Item.findOneAndDelete({ _id }),
 		UserFollowUser: async (_, { followerId, followeeId }) => {
-			await Mongo.UserFollowUser.create({
+			await Mongo.UserFollowUser.findOrCreate({
 				followerId,
 				followeeId,
 			});
@@ -70,15 +72,15 @@ export default {
 			return user;
 		},
 		UserLikeItem: async (_, { userId, itemId }) => {
-			await Mongo.UserLikeItem.create({
+			await Mongo.UserLikeItem.findOrCreate({
 				userId,
 				itemId,
 			});
 			const user = await Mongo.User.findById(userId);
 			return user;
 		},
-		UserDisplikeItem: async (_, { userId, itemId }) => {
-			await Mongo.UserFollowUser.findOneAndDelete({ userId, itemId });
+		UserDislikeItem: async (_, { userId, itemId }) => {
+			await Mongo.UserLikeItem.findOneAndDelete({ userId, itemId });
 			const user = await Mongo.User.findById(userId);
 			return user;
 		},

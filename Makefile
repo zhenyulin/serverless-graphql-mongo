@@ -22,16 +22,13 @@ lint-watch:
 	@nodemon --watch src -q --exec 'make lint-fix'
 
 test:
-	@jest --runInBand
+	@jest --runInBand --forceExit
 
 test-watch:
 	@jest --watch --runInBand
 
 test-coverage:
-	@jest --coverage --runInBand
-
-integration-test:
-	@INTEGRATION_TEST=true jest --runInBand
+	@jest --coverage --runInBand --forceExit
 
 deploy:
 	@sls deploy --verbose --stage dev --region eu-west-1
